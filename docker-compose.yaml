@@ -1,0 +1,26 @@
+
+services:
+  crime-stats-service:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - crime-stats-database
+    environment:
+      - DATABASE_URL=postgres://user:password@crime-stats-database:5432/crime_stats?:sslmode=disable
+  
+  crime-stats-database:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: crime_stats
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
