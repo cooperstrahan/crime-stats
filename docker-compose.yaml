@@ -1,6 +1,6 @@
 
 services:
-  crime-stats-service:
+  service:
     build: 
       context: .
       dockerfile: Dockerfile

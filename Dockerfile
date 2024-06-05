@@ -4,10 +4,15 @@ FROM golang:1.22.3-bookworm
 # Creates an app directory to hold your app's source code
 WORKDIR /app
 
-COPY ./app .
+# Copy go.mod and go.sum first to leverage Docker cache
+COPY ./app/go.mod ./
 
 # Install go dependencies
 RUN go mod download
+
+# Copy the rest of the application code and the CSV file
+COPY ./app ./
+COPY ./Crime_Data_from_2020_to_Present.csv .
 
 # Build with your optional configuration
 RUN go build -o /crime-stats ./cmd/main.go
